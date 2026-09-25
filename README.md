@@ -52,7 +52,5 @@ lib/
 4. Run the project:
    flutter run
 
-## API Endpoints
 
-- POST https://www.hisabplus.com/Values/LogIn
-- GET https://www.hisabplus.com/Values/GetCustomerList?searchquery={query}&pageNo={page}&pageSize=20&SortyBy=Balance
+
