@@ -1,3 +1,4 @@
+import 'package:customer_manage/core/common/widgets/circular_indicator.dart';
 import 'package:customer_manage/modules/auth/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -78,14 +79,7 @@ class ULoginForm extends StatelessWidget {
             () => UElevatedButton(
               onPressed: controller.isLoading.value ? null : controller.login,
               child: controller.isLoading.value
-                  ? SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
+                  ? UCircularProgressIndicator()
                   : Text(
                       'Login',
                       style: TextStyle(fontWeight: FontWeight.bold),

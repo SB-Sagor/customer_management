@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../core/constrants/colors.dart';
+import '../../core/common/widgets/circular_indicator.dart';
+import '../../core/common/widgets/home_drawer.dart';
+import '../../core/constraints/colors.dart';
 import 'customer_controller.dart';
 import 'customer_details.dart';
 
@@ -25,8 +27,10 @@ class _CustomerListViewState extends State<CustomerListView> {
   bool hasMore = true;
   int pageNo = 1;
   String token = '';
+
   final controller = Get.find<CustomerController>();
   final scroll = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,6 @@ class _CustomerListViewState extends State<CustomerListView> {
     getCustomers();
 
     //scroll
-
     scroll.addListener(() {
       if (scroll.position.pixels == scroll.position.maxScrollExtent) {
         if (!isMoreLoading && hasMore) {
@@ -113,32 +116,12 @@ class _CustomerListViewState extends State<CustomerListView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xffA4C8AE),
+          backgroundColor: UColors.primary,
           toolbarHeight: 80,
           foregroundColor: Colors.white,
           title: Text('Customers'),
         ),
-        drawer: Drawer(
-          child: Column(
-            children: [
-              UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [UColors.primary, UColors.secondary],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: Icon(Iconsax.user),
-                ),
-                accountName: Text('Admin'),
-                accountEmail: Text('admin@gmail.com'),
-              ),
-            ],
-          ),
-        ),
+        drawer: UDrawer(controller: controller),
         body: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
@@ -149,7 +132,7 @@ class _CustomerListViewState extends State<CustomerListView> {
 
               Expanded(
                 child: isLoading
-                    ? Center(child: CircularProgressIndicator(strokeWidth: 2))
+                    ? Center(child: UCircularProgressIndicator())
                     : customers.isEmpty
                     ? Text('No Customer found')
                     : ListView.builder(
@@ -162,55 +145,20 @@ class _CustomerListViewState extends State<CustomerListView> {
                           if (index == customers.length) {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: UCircularProgressIndicator(),
                             );
                           }
                           final customer = customers[index];
 
                           final image = customer['ImagePath'];
-                          return ListTile(
-                            title: Text(
-                              customer['Name'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                            subtitle: Text(customer['Phone']),
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.blue.shade100,
-                              backgroundImage:
-                                  (image != null &&
-                                      image.toString().trim().isNotEmpty)
-                                  ? NetworkImage(
-                                      image.toString().startsWith('http')
-                                          ? image
-                                          : 'https://hisabplus.com${image.toString().startsWith('/') ? '' : '/'}${customer['ImagePath']}',
-                                    )
-                                  : null,
-                              child: customer['ImagePath'] == null
-                                  ? Icon(Iconsax.user)
-                                  : null,
-                            ),
-                            trailing: Icon(Iconsax.arrow_right_3),
-                            onTap: () {
-                              if (customer['Id'] != null) {
-                                Get.to(
-                                  () => CustomerDetails(customer: customer),
-                                );
-                              }
-                            },
-                          );
+
+                          String name = customer['Name'];
+                          //for image
+                          String firstLetter = name.isNotEmpty
+                              ? name[0].toUpperCase()
+                              : '?';
+
+                          return customerImage(customer, image, firstLetter);
                         },
                       ),
               ),
@@ -221,6 +169,35 @@ class _CustomerListViewState extends State<CustomerListView> {
     );
   }
 
+  //customer profile function
+  ListTile customerImage(dynamic customer, dynamic image, String firstLetter) {
+    return ListTile(
+      title: Text(
+        customer['Name'],
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+      ),
+      subtitle: Text(customer['Phone']),
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue.shade100,
+        backgroundImage: (image != null && image.toString().trim().isNotEmpty)
+            ? NetworkImage(
+                image.toString().startsWith('http')
+                    ? image
+                    : 'https://hisabplus.com${image.toString().startsWith('/') ? '' : '/'}${customer['ImagePath']}',
+              )
+            : null,
+        child: image == null ? Text(firstLetter) : null,
+      ),
+      trailing: Icon(Iconsax.arrow_right_3),
+      onTap: () {
+        if (customer['Id'] != null) {
+          Get.to(() => CustomerDetails(customer: customer));
+        }
+      },
+    );
+  }
+
+  //search function
   TextFormField searchTextFormField() {
     return TextFormField(
       controller: controller.search,

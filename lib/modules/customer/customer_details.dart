@@ -1,10 +1,7 @@
-import 'package:customer_manage/core/common/widgets/elevated_button.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../core/constrants/colors.dart';
+import '../../core/constraints/colors.dart';
 
 class CustomerDetails extends StatefulWidget {
   final dynamic customer;
@@ -191,9 +188,9 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                         style: TextStyle(color: Colors.red, fontSize: 12),
                       ),
                       subtitle: Text(
-                        item['TotalDue'].toString(),
+                        ' Tk ' + item['TotalDue'].toString(),
                         style: TextStyle(
-                          color: Colors.red,
+                          color: UColors.red,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

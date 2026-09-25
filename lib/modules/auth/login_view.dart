@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/common/widgets/login_form.dart';
 import '../../core/common/widgets/social_button.dart';
+import '../../core/constraints/colors.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -23,7 +24,7 @@ class LoginView extends StatelessWidget {
                     'Customer Management',
                     style: TextStyle(
                       fontSize: 30,
-                      color: Colors.blue,
+                      color: UColors.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

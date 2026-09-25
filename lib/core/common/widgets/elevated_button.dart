@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constraints/colors.dart';
+
 class UElevatedButton extends StatelessWidget {
   const UElevatedButton({
     super.key,
@@ -16,11 +18,13 @@ class UElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blueAccent,
+          backgroundColor: UColors.primary,
           foregroundColor: Colors.black,
           shadowColor: Colors.blue.withValues(alpha: 0.2),
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: child,
       ),
