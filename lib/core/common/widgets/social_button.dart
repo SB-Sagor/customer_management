@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class USocialButton extends StatelessWidget {
   const USocialButton({super.key});
@@ -21,7 +22,13 @@ class USocialButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
           ),
           child: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.snackbar(
+                'Notice',
+                'Google sign-in is not supported this time',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            },
             icon: Image.network(
               'https://cdn-icons-png.flaticon.com/128/2702/2702602.png',
               height: 46,

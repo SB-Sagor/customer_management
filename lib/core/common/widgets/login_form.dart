@@ -97,7 +97,13 @@ class ULoginForm extends StatelessWidget {
             width: double.infinity,
             height: 52,
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.snackbar(
+                  'Notice',
+                  'Registration is managed by organization admin.',
+                  snackPosition: SnackPosition.BOTTOM,
+                );
+              },
               style: OutlinedButton.styleFrom(
                 foregroundColor: Colors.black,
                 shadowColor: Colors.blue.withValues(alpha: 0.2),

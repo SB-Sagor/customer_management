@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-
 import 'customer_controller.dart';
 import 'customer_details.dart';
-
 class CustomerListView extends StatefulWidget {
   const CustomerListView({super.key});
 
@@ -16,40 +13,82 @@ class CustomerListView extends StatefulWidget {
 }
 
 class _CustomerListViewState extends State<CustomerListView> {
+  //previously handel by that
   List<dynamic> customers = [];
+
   bool isLoading = true;
+  bool isMoreLoading = false;
+  bool hasMore = true;
+  int pageNo = 1;
   String token = '';
   final controller = Get.find<CustomerController>();
+  final scroll = ScrollController();
   @override
   void initState() {
     super.initState();
     token = Get.arguments?.toString() ?? '';
     getCustomers();
+
+    //scroll
+
+    scroll.addListener(() {
+      if (scroll.position.pixels == scroll.position.maxScrollExtent) {
+        if (!isMoreLoading && hasMore) {
+          pageNo++;
+          getCustomers(page: pageNo);
+        }
+      }
+    });
   }
 
-  Future<void> getCustomers({String query = ''}) async {
+  Future<void> getCustomers({String query = '', int page = 1}) async {
     setState(() {
-      isLoading = true;
+      if (page == 1) {
+        isLoading = true;
+        isMoreLoading = false;
+      } else {
+        isMoreLoading = true;
+      }
     });
-    Uri url = Uri.parse(
-      'https://www.hisabplus.com/Values/GetCustomerList?searchquery=$query&pageNo=1&pageSize=20&SortyBy=Balance',
-    );
-    http.Response response = await http.get(
-      url,
-      headers: {'Authorization': token},
-    );
-    if (response.statusCode == 200) {
+    try {
+      if (page > 1) {
+        await Future.delayed(Duration(seconds: 2));
+      }
+      Uri url = Uri.parse(
+        //url link change little bit pageNO=1 in previous
+        'https://www.hisabplus.com/Values/GetCustomerList?searchquery=$query&pageNo=$page&pageSize=20&SortyBy=Balance',
+      );
+
+      http.Response response = await http.get(
+        url,
+        headers: {'Authorization': token},
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          debugPrint(response.statusCode.toString());
+          final Map<String, dynamic> data = jsonDecode(response.body);
+          final List<dynamic> newList = data['CustomerList'] ?? [];
+          isLoading = false;
+
+          if (page == 1) {
+            customers = newList;
+          } else {
+            customers.addAll(newList);
+          }
+          hasMore = newList.length == 20;
+        });
+      } else {
+        Get.snackbar('Error', 'Failed to load customer list');
+        debugPrint('Error Occur and Response is ${response.statusCode}');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Internet connection error');
+    } finally {
       setState(() {
-        debugPrint(response.statusCode.toString());
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        customers = data['CustomerList'];
+        isMoreLoading = false;
         isLoading = false;
       });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-      debugPrint('Error Occur and Response is ${response.statusCode}');
     }
   }
 
@@ -78,44 +117,40 @@ class _CustomerListViewState extends State<CustomerListView> {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
-              TextFormField(
-                controller: controller.search,
-
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  prefixIcon: Icon(Iconsax.user_search),
-                  suffixIcon: controller.search.text.isNotEmpty
-                      ? IconButton(
-                          onPressed: () {
-                            controller.search.clear();
-                            setState(() {});
-                            getCustomers(query: '');
-                          },
-                          icon: Icon(Iconsax.close_circle),
-                        )
-                      : null,
-                  labelText: 'search',
-                ),
-                onChanged: (value) {
-                  setState(() {});
-                  getCustomers(query: value);
-                },
-              ),
+              //searchbar
+              searchTextFormField(),
               SizedBox(height: 12),
+
               Expanded(
                 child: isLoading
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator(strokeWidth: 2))
                     : customers.isEmpty
                     ? Text('No Customer found')
                     : ListView.builder(
                         // separatorBuilder: (context, index) =>
                         // const SizedBox(height: 8),
-                        shrinkWrap: true,
-                        itemCount: customers.length,
+                        controller: scroll,
+                        // shrinkWrap: true,
+                        itemCount: customers.length + (isMoreLoading ? 1 : 0),
                         itemBuilder: (context, index) {
+                          if (index == customers.length) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                           final customer = customers[index];
+
                           final image = customer['ImagePath'];
                           return ListTile(
                             title: Text(
@@ -157,6 +192,32 @@ class _CustomerListViewState extends State<CustomerListView> {
           ),
         ),
       ),
+    );
+  }
+
+  TextFormField searchTextFormField() {
+    return TextFormField(
+      controller: controller.search,
+
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+        prefixIcon: Icon(Iconsax.user_search),
+        suffixIcon: controller.search.text.isNotEmpty
+            ? IconButton(
+                onPressed: () {
+                  controller.search.clear();
+                  setState(() {});
+                  getCustomers(query: '');
+                },
+                icon: Icon(Iconsax.close_circle),
+              )
+            : null,
+        labelText: 'search',
+      ),
+      onChanged: (value) {
+        setState(() {});
+        getCustomers(query: value);
+      },
     );
   }
 }
