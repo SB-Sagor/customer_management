@@ -1,10 +1,14 @@
 import 'dart:convert';
+
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import '../../core/constrants/colors.dart';
 import 'customer_controller.dart';
 import 'customer_details.dart';
+
 class CustomerListView extends StatefulWidget {
   const CustomerListView({super.key});
 
@@ -109,9 +113,31 @@ class _CustomerListViewState extends State<CustomerListView> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.lightBlue,
-          foregroundColor: Colors.black,
-          title: Center(child: Text('Customers')),
+          backgroundColor: Color(0xffA4C8AE),
+          toolbarHeight: 80,
+          foregroundColor: Colors.white,
+          title: Text('Customers'),
+        ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [UColors.primary, UColors.secondary],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: Icon(Iconsax.user),
+                ),
+                accountName: Text('Admin'),
+                accountEmail: Text('admin@gmail.com'),
+              ),
+            ],
+          ),
         ),
         body: Padding(
           padding: EdgeInsets.all(16),

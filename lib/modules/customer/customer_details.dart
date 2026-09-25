@@ -4,6 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../core/constrants/colors.dart';
+
 class CustomerDetails extends StatefulWidget {
   final dynamic customer;
 
@@ -17,13 +19,13 @@ class _CustomerDetailsState extends State<CustomerDetails> {
   @override
   Widget build(BuildContext context) {
     final item = widget.customer;
-    bool isActive = item['IsInActive'] == true;
+    bool isActive = item['IsInActive'] == false;
     final img = item['ImagePath'];
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
+      backgroundColor: UColors.secondary,
       appBar: AppBar(
         title: Text(item['Name']),
-        backgroundColor: Colors.blue,
+        backgroundColor: UColors.primary,
         foregroundColor: Colors.white,
       ),
       body: Column(
@@ -33,7 +35,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.blue, Colors.white],
+                colors: [UColors.primary, UColors.secondary],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
               ),
@@ -51,10 +53,11 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   ),
                   child: CircleAvatar(
                     radius: 58,
-                    backgroundColor: Colors.blue.shade100,
+                    backgroundColor: UColors.primary,
                     backgroundImage: img != null
                         ? NetworkImage('https://www.hisabplus.com/$img')
                         : null,
+                    child: img == null ? Icon(Iconsax.user) : null,
                   ),
                 ),
                 SizedBox(height: 8),
@@ -63,7 +66,7 @@ class _CustomerDetailsState extends State<CustomerDetails> {
                   decoration: BoxDecoration(
                     gradient: isActive
                         ? LinearGradient(
-                            colors: [Colors.green, Colors.greenAccent],
+                            colors: [Colors.green, Colors.green.shade100],
                           )
                         : LinearGradient(
                             colors: [Colors.red, Colors.redAccent],
