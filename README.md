@@ -6,7 +6,7 @@ A Flutter application developed to manage and browse customer accounts using His
 
 ## Overview
 
-This project was built as a practical assessment task. It covers token-based authentication, real-time customer search, paginated infinite scrolling, and dedicated customer profile screens.
+This project was built as a practical assessment task. It covers token-based authentication, customer search, paginated infinite scrolling, and dedicated customer profile screens.
 
 ## Features
 
