@@ -43,12 +43,13 @@ lib/
 
 1. Clone the repository:
    git clone https://github.com/your-username/customer-management-flutter.git
+   
    cd customer-management-flutter
 
-2. Fetch dependencies:
+3. Fetch dependencies:
    flutter pub get
 
-3. Run the project:
+4. Run the project:
    flutter run
 
 ## API Endpoints
