@@ -1,3 +1,5 @@
+<img width="1268" height="529" alt="image" src="https://github.com/user-attachments/assets/17adc34a-17ee-4d7a-b618-04d37998a1d4" />
+
 # Customer Management App
 
 A Flutter application developed to manage and browse customer accounts using Hisabplus REST APIs. Built with GetX for state management and page routing.
