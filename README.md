@@ -1,4 +1,4 @@
-<img width="1268" height="529" alt="image" src="https://github.com/user-attachments/assets/17adc34a-17ee-4d7a-b618-04d37998a1d4" />
+<img width="1267" height="529" alt="image" src="https://github.com/user-attachments/assets/8847885a-3ff1-4610-a075-43ccda80e974" />
 
 # Customer Management App
 
