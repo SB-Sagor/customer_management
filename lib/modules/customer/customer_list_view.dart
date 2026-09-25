@@ -20,12 +20,13 @@ class CustomerListView extends StatefulWidget {
 
 class _CustomerListViewState extends State<CustomerListView> {
   //previously handel by that
-  List<dynamic> customers = [];
+  List<dynamic> customers = [].obs;
 
-  bool isLoading = true;
-  bool isMoreLoading = false;
-  bool hasMore = true;
+  RxBool isLoading = true.obs;
+  RxBool isMoreLoading = false.obs;
+  RxBool hasMore = true.obs;
   int pageNo = 1;
+  RxString search = ''.obs;
   String token = '';
 
   final controller = Get.find<CustomerController>();
@@ -40,7 +41,7 @@ class _CustomerListViewState extends State<CustomerListView> {
     //scroll
     scroll.addListener(() {
       if (scroll.position.pixels == scroll.position.maxScrollExtent) {
-        if (!isMoreLoading && hasMore) {
+        if (!isMoreLoading.value && hasMore.value) {
           pageNo++;
           getCustomers(page: pageNo);
         }
@@ -51,10 +52,10 @@ class _CustomerListViewState extends State<CustomerListView> {
   Future<void> getCustomers({String query = '', int page = 1}) async {
     setState(() {
       if (page == 1) {
-        isLoading = true;
-        isMoreLoading = false;
+        isLoading.value = true;
+        isMoreLoading.value = false;
       } else {
-        isMoreLoading = true;
+        isMoreLoading.value = true;
       }
     });
     try {
@@ -76,14 +77,14 @@ class _CustomerListViewState extends State<CustomerListView> {
           debugPrint(response.statusCode.toString());
           final Map<String, dynamic> data = jsonDecode(response.body);
           final List<dynamic> newList = data['CustomerList'] ?? [];
-          isLoading = false;
+          isLoading.value = false;
 
           if (page == 1) {
-            customers = newList;
+            customers.assignAll(newList);
           } else {
             customers.addAll(newList);
           }
-          hasMore = newList.length == 20;
+          hasMore.value = newList.length == 20;
         });
       } else {
         Get.snackbar('Error', 'Failed to load customer list');
@@ -93,8 +94,8 @@ class _CustomerListViewState extends State<CustomerListView> {
       Get.snackbar('Error', 'Internet connection error');
     } finally {
       setState(() {
-        isMoreLoading = false;
-        isLoading = false;
+        isMoreLoading.value = false;
+        isLoading.value = false;
       });
     }
   }
@@ -131,36 +132,41 @@ class _CustomerListViewState extends State<CustomerListView> {
               SizedBox(height: 12),
 
               Expanded(
-                child: isLoading
-                    ? Center(child: UCircularProgressIndicator())
-                    : customers.isEmpty
-                    ? Text('No Customer found')
-                    : ListView.builder(
-                        // separatorBuilder: (context, index) =>
-                        // const SizedBox(height: 8),
-                        controller: scroll,
-                        // shrinkWrap: true,
-                        itemCount: customers.length + (isMoreLoading ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          if (index == customers.length) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: UCircularProgressIndicator(),
-                            );
-                          }
-                          final customer = customers[index];
+                child: Obx(
+                  () => isLoading.value
+                      ? Center(child: UCircularProgressIndicator())
+                      : customers.isEmpty
+                      ? Text('No Customer found')
+                      : ListView.builder(
+                          // separatorBuilder: (context, index) =>
+                          // const SizedBox(height: 8),
+                          controller: scroll,
+                          // shrinkWrap: true,
+                          itemCount:
+                              customers.length + (isMoreLoading.value ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index == customers.length) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                child: UCircularProgressIndicator(),
+                              );
+                            }
+                            final customer = customers[index];
 
-                          final image = customer['ImagePath'];
+                            final image = customer['ImagePath'];
 
-                          String name = customer['Name'];
-                          //for image
-                          String firstLetter = name.isNotEmpty
-                              ? name[0].toUpperCase()
-                              : '?';
+                            String name = customer['Name'];
+                            //for image
+                            String firstLetter = name.isNotEmpty
+                                ? name[0].toUpperCase()
+                                : '?';
 
-                          return customerImage(customer, image, firstLetter);
-                        },
-                      ),
+                            return customerImage(customer, image, firstLetter);
+                          },
+                        ),
+                ),
               ),
             ],
           ),
@@ -205,20 +211,24 @@ class _CustomerListViewState extends State<CustomerListView> {
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         prefixIcon: Icon(Iconsax.user_search),
-        suffixIcon: controller.search.text.isNotEmpty
-            ? IconButton(
-                onPressed: () {
-                  controller.search.clear();
-                  setState(() {});
-                  getCustomers(query: '');
-                },
-                icon: Icon(Iconsax.close_circle),
-              )
-            : null,
+        suffixIcon: Obx(
+          () => search.value.isNotEmpty
+              ? IconButton(
+                  onPressed: () {
+                    controller.search.clear();
+                    search.value = '';
+                    pageNo = 1;
+                    getCustomers(query: '');
+                  },
+                  icon: Icon(Iconsax.close_circle),
+                )
+              : SizedBox.shrink(),
+        ),
         labelText: 'search',
       ),
       onChanged: (value) {
-        setState(() {});
+        search.value = value;
+        pageNo = 1;
         getCustomers(query: value);
       },
     );
