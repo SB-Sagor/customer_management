@@ -1,17 +1,58 @@
-# customer_manage
+<img width="1267" height="529" alt="image" src="https://github.com/user-attachments/assets/8847885a-3ff1-4610-a075-43ccda80e974" />
 
-A new Flutter project.
+# Customer Management App
 
-## Getting Started
+A Flutter application developed to manage and browse customer accounts using Hisabplus REST APIs. Built with GetX for state management and page routing.
 
-This project is a starting point for a Flutter application.
+## Overview
 
-A few resources to get you started if this is your first Flutter project:
+This project was built as a practical assessment task. It covers token-based authentication, customer search, paginated infinite scrolling, and dedicated customer profile screens.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Authentication: Login flow integrating with Hisabplus API and handling user access tokens.
+- Paginated Customer List: Loads 20 records per request with an infinite scroll listener attached to ListView.builder.
+- Search Functionality: Filters customer records on input change with query reset, keyboard unfocus, and back navigation handling via PopScope.
+- Avatar Fallback: Loads network images when available; displays the customer's first name letter if image data is missing or empty.
+- Customer Details: Shows detailed contact information, address, customer type, active/inactive status, and due amounts formatted in BDT.
+- Navigation Drawer: Basic profile overview with logout confirmation and session reset.
+- Error Handling: Handles null/empty API values safely and wraps views inside scrollable layouts to prevent pixel overflows.
+
+## Tech Stack
+
+- Framework: Flutter
+- State Management: GetX
+- HTTP Client: http
+- Icons: Iconsax
+
+## Project Structure
+
+lib/
+├── core/
+│   ├── common/widgets/
+│   └── constants/
+├── modules/
+│   ├── auth/
+│   │   ├── controllers/
+│   │   └── views/
+│   └── customer/
+│       ├── controllers/
+│       ├── views/
+│       └── widgets/
+└── main.dart
+
+## How to Run
+
+1. Clone the repository:
+   git clone https://github.com/your-username/customer-management-flutter.git
+   
+   cd customer-management-flutter
+
+3. Fetch dependencies:
+   flutter pub get
+
+4. Run the project:
+   flutter run
+
+
+
