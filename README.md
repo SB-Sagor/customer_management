@@ -44,7 +44,7 @@ lib/
 ## How to Run
 
 1. Clone the repository:
-   git clone https://github.com/your-username/customer-management-flutter.git
+   git clone https://github.com/SB-Sagor/customer_management.git
    
    cd customer-management-flutter
 
