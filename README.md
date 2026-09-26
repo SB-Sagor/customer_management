@@ -46,7 +46,7 @@ lib/
 1. Clone the repository:
    git clone https://github.com/SB-Sagor/customer_management.git
    
-   cd customer_management-flutter
+   cd customer_management
 
 3. Fetch dependencies:
    flutter pub get
