@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constraints/colors.dart';
+import '../../constants/colors.dart';
 
 class UCircularProgressIndicator extends StatelessWidget {
   const new({super.key});

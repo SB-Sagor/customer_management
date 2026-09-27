@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../core/constraints/colors.dart';
+import '../../core/constants/colors.dart';
+
 
 class CustomerDetails extends StatefulWidget {
   final dynamic customer;

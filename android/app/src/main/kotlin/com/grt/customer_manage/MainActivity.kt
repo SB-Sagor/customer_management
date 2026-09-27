@@ -1,4 +1,4 @@
-package com.example.customer_manage
+package com.grt.customer_manage
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 import '../../core/common/widgets/circular_indicator.dart';
 import '../../core/common/widgets/home_drawer.dart';
-import '../../core/constraints/colors.dart';
+import '../../core/constants/colors.dart';
 import 'customer_controller.dart';
 import 'customer_details.dart';
 
