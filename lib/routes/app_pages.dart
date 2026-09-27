@@ -1,10 +1,10 @@
 import 'package:customer_manage/modules/customer/customer_binding.dart';
-import 'package:customer_manage/modules/customer/customer_list_view.dart';
+import 'package:customer_manage/modules/customer/screens/customer_list_view.dart';
 import 'package:customer_manage/routes/app_routes.dart';
 import 'package:get/get.dart';
 
 import '../modules/auth/login_binding.dart';
-import '../modules/auth/login_view.dart';
+import '../modules/auth/screens/login_view.dart';
 
 class AppPages {
   static const initial = AppRoutes.login;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../core/constants/colors.dart';
+import '../../../core/constants/colors.dart';
 
 
 class CustomerDetails extends StatefulWidget {
@@ -23,7 +23,6 @@ class _CustomerDetailsState extends State<CustomerDetails> {
       backgroundColor: UColors.secondary,
       appBar: AppBar(
         title: Text(item['Name']),
-        backgroundColor: UColors.primary,
         foregroundColor: Colors.white,
       ),
       body: Column(

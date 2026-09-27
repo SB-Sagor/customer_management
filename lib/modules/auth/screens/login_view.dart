@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'login_form.dart';
-import '../../core/common/widgets/social_button.dart';
-import '../../core/constants/colors.dart';
+import '../../../core/common/widgets/social_button.dart';
+import '../../../core/constants/colors.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});

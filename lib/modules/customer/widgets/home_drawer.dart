@@ -3,8 +3,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../../modules/customer/customer_controller.dart';
-import '../../constants/colors.dart';
+import '../customer_controller.dart';
+import '../../../core/constants/colors.dart';
 
 class UDrawer extends StatelessWidget {
   const new({super.key, required this.controller});
