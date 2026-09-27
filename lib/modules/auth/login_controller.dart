@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class LoginController extends GetxController {
   // Add controller
   final email = TextEditingController(text: "admin@gmail.com");
-  final password = TextEditingController(text: 'admin1234');
+  final password = TextEditingController();
   final loginFormKey = GlobalKey<FormState>();
 
   final isPasswordVisible = false.obs;
