@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../core/common/widgets/login_form.dart';
+import 'login_form.dart';
 import '../../core/common/widgets/social_button.dart';
 import '../../core/constants/colors.dart';
 

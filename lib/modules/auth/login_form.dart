@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import 'elevated_button.dart';
+import '../../core/common/widgets/elevated_button.dart';
 
 class ULoginForm extends StatelessWidget {
   ULoginForm({super.key});
